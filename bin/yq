@@ -1,0 +1,223 @@
+#!/usr/bin/env perl
+package yq;
+{
+  $yq::VERSION = '0.001';
+}
+# ABSTRACT: Filter YAML through a command-line program
+
+use App::YAML::Filter::Base;
+use Pod::Usage qw( pod2usage );
+use Getopt::Long qw( GetOptionsFromArray );
+use YAML;
+
+sub empty() {
+    bless {}, 'empty';
+}
+sub is_empty {
+    return ref $_[0] eq 'empty';
+}
+
+sub main {
+    my ( $class, @argv ) = @_;
+    my %opt;
+    GetOptionsFromArray( \@argv, \%opt,
+        'h|help',
+    );
+    pod2usage(0) if $opt{help};
+
+    my $filter = shift @argv;
+    pod2usage("ERROR: Must give a filter") unless $filter;
+
+    my $buffer;
+    while ( my $line = <STDIN> ) {
+        if ( $buffer && $line =~ /^---/ ) {
+            my $output = $class->filter( $filter, YAML::Load( $buffer ) );
+            print YAML::Dump( $output ) unless is_empty( $output );
+            $buffer = '';
+        }
+        $buffer .= $line;
+    }
+
+    return 0;
+}
+
+# Filter MUST NOT mutate $doc!
+sub filter {
+    my ( $class, $filter, $doc ) = @_;
+    # Whole document (needed for if/then)
+    if ( $filter =~ /^[.]$/ ) {
+        return $doc;
+    }
+    # Hash key (future: deeper inspection, arrays)
+    elsif ( $filter =~ /^[.](\w+)$/ ) {
+        return $doc->{ $1 };
+    }
+    # If/then (future: else, better conditions)
+    elsif ( $filter =~ /^if\s+(.+?)\s+(eq|ne)\s+(.+?)\s+then\s+(.+?)(?:\s+else\s+(.+?))?$/ ) {
+        my ( $lhs_filter, $cond, $rhs_filter, $true_filter, $false_filter ) = ( $1, $2, $3, $4, $5 );
+        my $lhs_value = $class->filter( $lhs_filter, $doc );
+        my $rhs_value = $class->filter( $rhs_filter, $doc );
+        if ( $cond eq 'eq' ) {
+            if ( $lhs_value eq $rhs_value ) {
+                return $class->filter( $true_filter, $doc );
+            }
+            elsif ( $false_filter ) {
+                return $class->filter( $false_filter, $doc );
+            }
+            else {
+                return;
+            }
+        }
+        elsif ( $cond eq 'ne' ) {
+            if ( $lhs_value ne $rhs_value ) {
+                return $class->filter( $true_filter, $doc );
+            }
+            elsif ( $false_filter ) {
+                return $class->filter( $false_filter, $doc );
+            }
+            else {
+                return;
+            }
+        }
+    }
+    elsif ( $filter eq 'empty' ) {
+        return empty;
+    }
+    # Barewords (future: quoted strings)
+    elsif ( $filter !~ /^[.]/ ) {
+        return $filter;
+    }
+    else {
+        die "Could not parse filter '$filter'\n";
+    }
+    return;
+}
+
+exit __PACKAGE__->main( @ARGV ) unless caller(0);
+
+__END__
+
+=pod
+
+=head1 NAME
+
+yq - Filter YAML through a command-line program
+
+=head1 VERSION
+
+version 0.001
+
+=head1 SYNOPSIS
+
+    yq <filter>
+
+    yq -h|--help
+
+=head1 DESCRIPTION
+
+This program takes a stream of YAML documents on STDIN, applies a filter, then
+writes the results to STDOUT.
+
+=head1 ARGUMENTS
+
+=head2 filter
+
+See L<FILTER SYNTAX>.
+
+=head1 OPTIONS
+
+=head1 FILTER SYNTAX
+
+=over
+
+=item .
+
+Returns the entire document, unfiltered. Useful in if/then statements.
+
+    # INPUT
+    foo: bar
+    baz: fuzz
+
+    $ yq .
+    foo: bar
+    baz: fuzz
+
+=item .key
+
+Extract a single key out of a hash document.
+
+    # INPUT
+    foo: bar
+    baz: fuzz
+
+    $ yq .foo
+    bar
+
+=item if lhs_filter eq rhs_filter then true_filter else false_filter
+
+If the lhs filter and rhs_filter are equal, return the true_filter,
+otherwise return the false_filter.
+
+For example
+
+    # INPUT
+    foo: bar
+    baz: fuzz
+
+    $ yq 'if .foo eq bar then .baz else .foo'
+    fuzz
+
+    $ yq 'if .foo eq buzz then .baz else .foo'
+    bar
+
+The else false_filter is optional and defaults to returning undefined.
+
+=item empty
+
+The special value empty suppresses printing of a document. Normally,
+an undefined document will show up in the output as "--- ~". If your
+filter instead yields empty, the document will not be printed at all.
+
+This is especially useful in conditionals:
+
+    # INPUT
+    foo: bar
+    baz: fuzz
+
+    $ yq 'if .foo eq bar then . else empty'
+    foo: bar
+    baz: fuzz
+
+    $ yq 'if .foo eq buzz then . else empty'
+    $
+
+=item Values
+
+Any bareword that is not recognized as a syntax element is treated
+as a value.
+
+=back
+
+=head1 SEE ALSO
+
+=over
+
+=item jq
+
+L<http://stedolan.github.io/jq/> A filter for JSON documents. The inspiration
+for this project.
+
+=back
+
+=head1 AUTHOR
+
+Doug Bell <preaction@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2014 by Doug Bell.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

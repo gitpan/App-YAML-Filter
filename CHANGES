@@ -1,0 +1,133 @@
+==================================================
+Changes from 2013-04-30 00:00:00 +0000 to present.
+==================================================
+
+------------------------------------------
+version 0.001 at 2014-04-30 05:56:18 +0000
+------------------------------------------
+
+  Change: a7ddd3fdf118575f95f3cdf964756e3efcb450ad
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-04-30 00:55:50 +0000
+
+    fix gitignore for the app rename
+
+    I keep forgetting that .gitignore has specific lines for the build
+    directories... 
+
+  Change: ef3778139eaef637fd2991413b044e4a72a2c587
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-04-30 00:55:16 +0000
+
+    update build artifacts 
+
+  Change: baa8ad66e528fb81e4b0c7399138921b645feefb
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-04-30 00:52:55 +0000
+
+    migrate to Import::Base 
+
+  Change: bb1dd55c488426d3f89e11fc4811f6ee01c3ec47
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-04-30 00:51:40 +0000
+
+    rename to App-YAML-Filter 
+
+  Change: bfad74402bd650f703eebb6185647a40d1e13661
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 19:53:48 +0000
+
+    update build artifacts 
+
+  Change: 11989b63117b4e01c2c774a8ea367707cd7c6e35
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 19:53:30 +0000
+
+    document the else clause and the empty value 
+
+  Change: 7704fd1517efd49807316a38e77aa505829428c7
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 19:48:19 +0000
+
+    add "empty" special value to suppress printing undef documents
+
+    If your filter produces an undefined value, usually "--- ~" gets
+    printed, which is ugly. Now, if your filter produces the special
+    value "empty", the document won't be printed at all.
+
+    This is straight from jq. 
+
+  Change: 44b33141784d4734cd35d6ea83cd3ff35e550d28
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 19:47:53 +0000
+
+    support else clauses in if statements 
+
+  Change: d7bc53c7a583cb8c50b39779f5879ac82779bcad
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 19:46:01 +0000
+
+    don't need to collect output as we're only working with one document
+
+    We may need to bring this back if/when we support pipes or other
+    kinds of complex filters. 
+
+  Change: dc4add1c9c95a5e6d5e444cfcdd36ca00f9eda1a
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 18:03:18 +0000
+
+    mark executables as executable 
+
+  Change: f8659a8f678c2f3a672394f3426a5283dbadf165
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 18:02:49 +0000
+
+    forgot to import pod2usage 
+
+  Change: d6c4c71f0447c39ce2a4beb8f6920597ef576053
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 18:01:41 +0000
+
+    add shebang line and remove modeline
+
+    Turns out vim uses the shebang line to determine the file format, so
+    we don't need the modeline anymore! 
+
+  Change: 917d4e2a070a3c1111e9f0864e81d855c78f5359
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 18:00:10 +0000
+
+    add URL for jq project 
+
+  Change: 7cec8c13c1fb37ca000742c31e69b3ac2cb5b6ff
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 17:58:44 +0000
+
+    remove <> because it's POD syntax and markdown thinks it's HTML 
+
+  Change: 75409ccd2058c4f3591258a414118c042504d741
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 17:45:00 +0000
+
+    add build artifacts 
+
+  Change: 99c892487c24a70b281c3bbfeb0dec88954e86a3
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 17:36:23 +0000
+
+    add initial use-case - filtering documents based on a hash key
+
+    This includes being able to filter a single key in a document hash,
+    being able to simply pass-through an entire document, being able to
+    perform a quick equals test on the results of two filters, and
+    allowing bare values to pass through. 
+
+  Change: 435cc5fcd8f46e0242c002c47041186ba8614000
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-04-23 16:17:23 +0000
+
+    initial skeleton 
+
+================
+End of releases.
+================

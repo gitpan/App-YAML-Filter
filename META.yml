@@ -1,0 +1,29 @@
+---
+abstract: 'Filter YAML through a command-line program'
+author:
+  - 'Doug Bell <preaction@cpan.org>'
+build_requires:
+  Capture::Tiny: 0
+  Module::Build: 0.3601
+  Test::Compile: 0
+  Test::Most: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.30
+  Module::Build: 0.3601
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: App-YAML-Filter
+requires:
+  Getopt::Long: 0
+  Import::Base: 0
+  Pod::Usage: 0
+  YAML: 0
+resources:
+  bugtracker: https://github.com/preaction/App-YAML-Filter/issues
+  homepage: https://github.com/preaction/App-YAML-Filter
+  repository: https://github.com/preaction/App-YAML-Filter.git
+version: 0.001
