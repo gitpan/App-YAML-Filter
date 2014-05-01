@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yq;
 {
-  $yq::VERSION = '0.002';
+  $yq::VERSION = '0.003';
 }
 # ABSTRACT: Filter YAML through a command-line program
 
@@ -118,7 +118,7 @@ yq - Filter YAML through a command-line program
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -138,6 +138,10 @@ writes the results to STDOUT.
 See L<SYNTAX>.
 
 =head1 OPTIONS
+
+=head2 -h | --help
+
+Show this help document.
 
 =head1 SYNTAX
 
@@ -232,7 +236,7 @@ This is especially useful in conditionals:
 Any bareword that is not recognized as a syntax element is treated
 as a value.
 
-=over
+=back
 
 =head2 CONDITIONALS
 

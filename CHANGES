@@ -3,7 +3,29 @@ Changes from 2013-05-01 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.002 at 2014-05-01 05:34:25 +0000
+version 0.003 at 2014-05-01 05:54:36 +0000
+------------------------------------------
+
+  Change: 8d5b8ca50206b515643e6eca50a7cc7225a67e6b
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-01 00:54:23 +0000
+
+    update build artifacts 
+
+  Change: 1b751b03774aa499c54c8861ff4a1bd8c3cc5de0
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-01 00:54:06 +0000
+
+    document the help option 
+
+  Change: 280810dc085a7c438df480afc76928a3fb22f605
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-01 00:53:21 +0000
+
+    fix POD errors 
+
+------------------------------------------
+version 0.002 at 2014-05-01 05:34:09 +0000
 ------------------------------------------
 
   Change: e064953d4e50d9c8deed5268ae8ad72fb84ace18
