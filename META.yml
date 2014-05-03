@@ -18,7 +18,7 @@ meta-spec:
   version: 1.4
 name: App-YAML-Filter
 requires:
-  Getopt::Long: 0
+  Getopt::Long: 2.36
   Import::Base: 0
   Pod::Usage: 0
   YAML: 0
@@ -26,4 +26,4 @@ resources:
   bugtracker: https://github.com/preaction/App-YAML-Filter/issues
   homepage: https://github.com/preaction/App-YAML-Filter
   repository: https://github.com/preaction/App-YAML-Filter.git
-version: 0.003
+version: 0.004

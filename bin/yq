@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yq;
 {
-  $yq::VERSION = '0.003';
+  $yq::VERSION = '0.004';
 }
 # ABSTRACT: Filter YAML through a command-line program
 
@@ -118,7 +118,7 @@ yq - Filter YAML through a command-line program
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
