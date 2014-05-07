@@ -11,4 +11,5 @@ bin/yq
 lib/App/YAML/Filter.pm
 lib/App/YAML/Filter/Base.pm
 t/00_compile.t
+t/share/foo.yml
 t/yq.t

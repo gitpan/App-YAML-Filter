@@ -1,9 +1,83 @@
 ==================================================
-Changes from 2013-05-03 00:00:00 +0000 to present.
+Changes from 2013-05-07 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.004 at 2014-05-03 03:30:53 +0000
+version 0.005 at 2014-05-07 03:45:33 +0000
+------------------------------------------
+
+  Change: dac4b1dc58d8fdd42bb642c84717b19f46d1c91f
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-06 22:45:17 +0000
+
+    update build artifacts 
+
+  Change: 8748e3496e91ba05669618949c643f772428cbea
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-06 22:42:55 +0000
+
+    add .[] to flatten an array
+
+    Fixes #5 
+
+  Change: d9b7393a6a25f7232fee77bcdd8909930f3e0f46
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-06 22:17:00 +0000
+
+    add , operator to join multiple filters
+
+    Fixes #4 
+
+  Change: 00b5737dfb29160b6d766c2ed82aa21ef3ccdf44
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-06 22:16:12 +0000
+
+    forgot the test file needed for filename arg test 
+
+  Change: a373938c8f3460f7c72df103fabbafc6ff3b4668
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-06 22:14:47 +0000
+
+    allow filenames to be given as further arguments
+
+    We're doing the <> operator manually for easier testing and because
+    our arguments are not necessarily in @ARGV.
+
+    Fixes #2 
+
+  Change: 6683908297270f49f7afe03050fd5e3662621104
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-06 14:35:19 +0000
+
+    prevent "undefined" warnings
+
+    If the definedness of each side of a comparison isn't equal, the
+    comparison cannot be equal.
+
+    I just now realized that this is completely wrong and will not
+    prevent all the definedness warnings... 
+
+  Change: 7591420da4669534e3da4543575bf2e62b1ebf80
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-06 14:34:25 +0000
+
+    filter documents that have no document separator
+
+    /^---/ is more of a "document header" than anything. If there isn't
+    any document header, and no --- at the end, we should still filter
+    the yaml. 
+
+  Change: cf00cae2ade1b7823c0ee4ad5eb0d21e9b15ed0c
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-06 14:33:11 +0000
+
+    prepare for using STDERR as an error channel
+
+    We'll spit out any YAML parsing errors to STDERR so that the output
+    channel remains clean and completely YAML 
+
+------------------------------------------
+version 0.004 at 2014-05-03 03:30:31 +0000
 ------------------------------------------
 
   Change: 6aefea733212862be2d8b5012af844f48b73e853

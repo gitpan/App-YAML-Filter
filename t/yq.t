@@ -2,7 +2,9 @@
 use App::YAML::Filter::Base;
 use Test::Most;
 use YAML qw( Dump Load );
-use Capture::Tiny qw( capture_merged );
+use Capture::Tiny qw( capture );
+use FindBin qw( $Bin );
+use File::Spec;
 require 'bin/yq';
 
 subtest 'filter single hash key' => sub {
@@ -65,6 +67,26 @@ subtest 'mixed array and hash keys' => sub {
     };
 };
 
+subtest ', emits multiple results' => sub {
+    my $doc = {
+        foo => 'bar',
+        baz => 'fuzz',
+    };
+    my $filter = '.foo, .baz';
+    my @out = yq->filter( $filter, $doc );
+    cmp_deeply \@out, [ 'bar', 'fuzz' ];
+};
+
+subtest '[] with no index flattens an array' => sub {
+    my $doc = {
+        foo => [ 1, 2, 3 ],
+        bar => [ 4, 5, 6 ],
+    };
+    my $filter = '.foo.[]';
+    my @out = yq->filter( $filter, $doc );
+    cmp_deeply \@out, [ 1, 2, 3 ];
+};
+
 subtest 'conditional match single hash key and return full document' => sub {
     my $doc = {
         foo => 'bar',
@@ -108,9 +130,50 @@ subtest 'empty does not print' => sub {
     open my $stdin, '<', \( YAML::Dump( @doc ) );
     local *STDIN = $stdin;
     my $filter = 'if .foo eq bar then . else empty';
-    my ( $output ) = capture_merged { yq->main( $filter ) };
+    my ( $output, $stderr ) = capture { yq->main( $filter ) };
+    ok !$stderr, 'stderr is empty' or diag "STDERR: $stderr";
     my @got = YAML::Load( $output );
     cmp_deeply \@got, [ $doc[0] ];
+};
+
+subtest 'single document with no --- separator' => sub {
+    my $doc = <<ENDYML;
+foo: bar
+baz: buzz
+flip:
+    - flop
+    - blip
+ENDYML
+    open my $stdin, '<', \$doc;
+    local *STDIN = $stdin;
+    my $filter = '.flip.[0]';
+    my ( $output, $stderr ) = capture { yq->main( $filter ) };
+    ok !$stderr, 'stderr is empty' or diag "STDERR: $stderr";
+    my @got = YAML::Load( $output );
+    cmp_deeply \@got, [ 'flop' ];
+};
+
+subtest 'file in ARGV' => sub {
+    my $file = File::Spec->catfile( $Bin, 'share', 'foo.yml' );
+    my $filter = '.foo';
+    my ( $output, $stderr ) = capture { yq->main( $filter, $file ) };
+    ok !$stderr, 'stderr is empty' or diag "STDERR: $stderr";
+    my @got = YAML::Load( $output );
+    cmp_deeply \@got, [ 'bar' ];
+};
+
+subtest 'multiple documents print properly' => sub {
+    my $doc = <<ENDYML;
+foo: bar
+baz: buzz
+ENDYML
+    open my $stdin, '<', \$doc;
+    local *STDIN = $stdin;
+    my $filter = '.foo, .baz';
+    my ( $output, $stderr ) = capture { yq->main( $filter ) };
+    ok !$stderr, 'stderr is empty' or diag "STDERR: $stderr";
+    my @got = YAML::Load( $output );
+    cmp_deeply \@got, [ 'bar', 'buzz' ];
 };
 
 done_testing;

@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yq;
 {
-  $yq::VERSION = '0.004';
+  $yq::VERSION = '0.005';
 }
 # ABSTRACT: Filter YAML through a command-line program
 
@@ -28,14 +28,38 @@ sub main {
     my $filter = shift @argv;
     pod2usage("ERROR: Must give a filter") unless $filter;
 
-    my $buffer;
-    while ( my $line = <STDIN> ) {
-        if ( $buffer && $line =~ /^---/ ) {
-            my $output = $class->filter( $filter, YAML::Load( $buffer ) );
-            print YAML::Dump( $output ) unless is_empty( $output );
-            $buffer = '';
+    push @argv, "-" unless @argv;
+    for $ARGV ( @argv ) {
+        # We're doing a similar behavior to <>, but manually for easier testing.
+        my $fh;
+        if ( $ARGV eq '-' ) {
+            # Use the existing STDIN so tests can fake it
+            $fh = \*STDIN;
         }
-        $buffer .= $line;
+        else {
+            unless ( open $fh, '<', $ARGV ) {
+                warn "Could not open file '$ARGV' for reading: $!\n";
+                next;
+            }
+        }
+
+        my $buffer;
+        while ( my $line = <$fh> ) {
+            # --- is the start of a new document
+            if ( $buffer && $line =~ /^---/ ) {
+                # Flush the previous document
+                my @output = $class->filter( $filter, YAML::Load( $buffer ) );
+                print YAML::Dump( $_ ) for grep { !is_empty( $_ ) } @output;
+                $buffer = '';
+            }
+            $buffer .= $line;
+        }
+        # Flush the buffer in the case of a single document with no ---
+        if ( $buffer =~ /\S/ ) {
+            #print STDERR "Buffer is: $buffer\n";
+            my @output = $class->filter( $filter, YAML::Load( $buffer ) );
+            print YAML::Dump( $_ ) for grep { !is_empty( $_ ) } @output;
+        }
     }
 
     return 0;
@@ -44,16 +68,24 @@ sub main {
 # Filter MUST NOT mutate $doc!
 sub filter {
     my ( $class, $filter, $doc ) = @_;
+    # , does multiple filters, yielding multiple documents
+    if ( $filter =~ /,/ ) {
+        my @filters = split /\s*,\s*/, $filter;
+        return map { $class->filter( $_, $doc ) } @filters;
+    }
     # Whole document (needed for if/then)
-    if ( $filter =~ /^[.]$/ ) {
+    elsif ( $filter =~ /^[.]$/ ) {
         return $doc;
     }
     # Hash and array keys to traverse the data structure
-    elsif ( $filter =~ /^((?:[.](?:\w+|\[\d+\]))+)$/ ) {
+    elsif ( $filter =~ /^((?:[.](?:\w+|\[\d*\]))+)$/ ) {
         my @keys = split /[.]/, $1;
         my $subdoc = $doc;
         for my $key ( @keys[1..$#keys] ) {
-            if ( $key =~ /^\[(\d+)\]$/ ) {
+            if ( $key =~ /^\[\]$/ ) {
+                return @{ $subdoc };
+            }
+            elsif ( $key =~ /^\[(\d+)\]$/ ) {
                 $subdoc = $subdoc->[ $1 ];
             }
             elsif ( $key =~ /^\w+$/ ) {
@@ -71,7 +103,7 @@ sub filter {
         my $lhs_value = $class->filter( $lhs_filter, $doc );
         my $rhs_value = $class->filter( $rhs_filter, $doc );
         if ( $cond eq 'eq' ) {
-            if ( $lhs_value eq $rhs_value ) {
+            if ( defined $lhs_value == defined $rhs_value && $lhs_value eq $rhs_value ) {
                 return $class->filter( $true_filter, $doc );
             }
             elsif ( $false_filter ) {
@@ -118,24 +150,29 @@ yq - Filter YAML through a command-line program
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
-    yq <filter>
+    yq <filter> [<file>...]
 
     yq -h|--help
 
 =head1 DESCRIPTION
 
-This program takes a stream of YAML documents on STDIN, applies a filter, then
-writes the results to STDOUT.
+This program takes a stream of YAML documents (on STDIN or file arguments),
+applies a filter, then writes the results to STDOUT.
 
 =head1 ARGUMENTS
 
 =head2 filter
 
 See L<SYNTAX>.
+
+=head2 <file>
+
+A YAML file to filter. The special file "-" refers to STDIN. If no files are
+specified, filter STDIN.
 
 =head1 OPTIONS
 
@@ -205,6 +242,33 @@ Extract a single item out of an array.
 
     $ yq .[2].baz.new
     old
+
+=item []
+
+Use [] with no index to flatten an array.
+
+    # INPUT
+    - foo: fuzz
+    - bar: buzz
+
+    $ yq '.[]'
+    foo: fuzz
+    ---
+    bar: buzz
+
+=item ,
+
+Multiple filters may be separated by commas to yield multiple documents in the
+output.
+
+    # INPUT
+    foo: bar
+    baz: fuzz
+
+    $ yq '.foo, .baz'
+    bar
+    ---
+    fuzz
 
 =back
 
