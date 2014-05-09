@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yq;
 {
-  $yq::VERSION = '0.005';
+  $yq::VERSION = '0.006';
 }
 # ABSTRACT: Filter YAML through a command-line program
 
@@ -21,7 +21,7 @@ sub main {
     my ( $class, @argv ) = @_;
     my %opt;
     GetOptionsFromArray( \@argv, \%opt,
-        'h|help',
+        'help|h',
     );
     pod2usage(0) if $opt{help};
 
@@ -150,7 +150,7 @@ yq - Filter YAML through a command-line program
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -167,7 +167,7 @@ applies a filter, then writes the results to STDOUT.
 
 =head2 filter
 
-See L<SYNTAX>.
+The filter to run. For the filter syntax, see L<SYNTAX>.
 
 =head2 <file>
 
