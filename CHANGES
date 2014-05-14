@@ -1,9 +1,65 @@
 ==================================================
-Changes from 2013-05-09 00:00:00 +0000 to present.
+Changes from 2013-05-14 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.007 at 2014-05-09 04:27:24 +0000
+version 0.008 at 2014-05-14 05:05:42 +0000
+------------------------------------------
+
+  Change: 91eac4bb2bd08fdcfb3e052dc685b2bc77aafac9
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-14 00:05:14 +0000
+
+    release v0.008 
+
+  Change: 9f8b6f277d07c4fc10c4df49397773a40283aebb
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-13 18:24:24 +0000
+
+    turn off STDOUT buffering
+
+    The buffer appears to be quite large... 
+
+  Change: dad0baec4058a9799311aa391fc0f43fc7cb76b6
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-13 18:21:49 +0000
+
+    add note to grep() instead of using `if/else empty` 
+
+  Change: cfe39aaed1813ad7ea3f1e8a654a79a011f2fc63
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-13 18:00:24 +0000
+
+    implement grep(EXPR)
+
+    This is also known as select(EXPR) for the jq folk.
+
+    Generalized the function parser to make it easier to add new
+    functions. `empty` is a function that takes no argument (though we do
+    not yet put it in the FUNCTIONS part of the docs).
+
+    Our recursive regex forces us to require Perl 5.10. I don't think
+    this is unreasonable, even ancient CentOS has 5.10 installed...
+
+    Fixes #7 
+
+  Change: 8644fbcf49f34447d0e5a9d13afeb15f6cd0f72a
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-13 17:30:45 +0000
+
+    allow `if .foo then .bar` for truthiness checking
+
+    This commit smartens up the parser quite a bit, allowing a more
+    generalized `if EXPR then FILTER else FILTER` syntax. EXPR is allowed
+    to be either FILTER or `FILTER OP FILTER`. FILTER is allowed to be
+    either a document path or a bareword string.
+
+    YAML doesn't seem to like the `boolean` module, which isn't nice...
+
+    Fixes #6 
+
+------------------------------------------
+version 0.007 at 2014-05-09 04:27:11 +0000
 ------------------------------------------
 
   Change: 55bf3d50e5bea71f9d888b12d8c6038666967dee
