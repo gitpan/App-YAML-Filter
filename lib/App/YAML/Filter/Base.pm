@@ -1,6 +1,6 @@
 package App::YAML::Filter::Base;
 {
-  $App::YAML::Filter::Base::VERSION = '0.009';
+  $App::YAML::Filter::Base::VERSION = '0.010';
 }
 # ABSTRACT: Base module for App::YAML::Filter
 
@@ -28,7 +28,7 @@ App::YAML::Filter::Base - Base module for App::YAML::Filter
 
 =head1 VERSION
 
-version 0.009
+version 0.010
 
 =head1 AUTHOR
 

@@ -22,6 +22,7 @@ requires:
   Getopt::Long: 2.36
   Import::Base: 0
   Pod::Usage::Return: 0
+  Text::Balanced: 0
   YAML: 0
   boolean: 0
   perl: 5.010
@@ -29,4 +30,4 @@ resources:
   bugtracker: https://github.com/preaction/App-YAML-Filter/issues
   homepage: https://github.com/preaction/App-YAML-Filter
   repository: https://github.com/preaction/App-YAML-Filter.git
-version: 0.009
+version: 0.010
