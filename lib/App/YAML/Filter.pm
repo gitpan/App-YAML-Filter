@@ -1,6 +1,6 @@
 package App::YAML::Filter;
 {
-  $App::YAML::Filter::VERSION = '0.008';
+  $App::YAML::Filter::VERSION = '0.009';
 }
 # ABSTRACT: Filter YAML with a series of rules
 
@@ -21,7 +21,7 @@ App::YAML::Filter - Filter YAML with a series of rules
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 
