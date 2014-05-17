@@ -10,6 +10,13 @@ README.mkdn
 bin/yq
 lib/App/YAML/Filter.pm
 lib/App/YAML/Filter/Base.pm
+lib/App/YAML/Filter/Test.pm
 t/00_compile.t
+t/combinator.t
+t/comparison.t
+t/conditional.t
+t/filter.t
+t/functions.t
 t/share/foo.yml
+t/values.t
 t/yq.t

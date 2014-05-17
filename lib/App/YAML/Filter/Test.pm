@@ -1,18 +1,21 @@
-package App::YAML::Filter::Base;
+package App::YAML::Filter::Test;
 {
-  $App::YAML::Filter::Base::VERSION = '0.011';
+  $App::YAML::Filter::Test::VERSION = '0.011';
 }
-# ABSTRACT: Base module for App::YAML::Filter
+# ABSTRACT: Base module for App::YAML::Filter tests
 
 use strict;
 use warnings;
-use base 'Import::Base';
+use base 'App::YAML::Filter::Base';
 
 sub modules {
     my ( $class, %args ) = @_;
+    my @modules = $class->SUPER::modules( %args );
     return (
-        strict => [],
-        warnings => [],
+        @modules,
+        FindBin => [ '$Bin' ],
+        'Test::Most' => [],
+        boolean => [':all'],
     );
 }
 
@@ -24,7 +27,7 @@ __END__
 
 =head1 NAME
 
-App::YAML::Filter::Base - Base module for App::YAML::Filter
+App::YAML::Filter::Test - Base module for App::YAML::Filter tests
 
 =head1 VERSION
 

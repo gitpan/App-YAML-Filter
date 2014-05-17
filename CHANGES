@@ -1,9 +1,110 @@
 ==================================================
-Changes from 2013-05-16 00:00:00 +0000 to present.
+Changes from 2013-05-17 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.010 at 2014-05-16 15:30:18 +0000
+version 0.011 at 2014-05-17 06:42:28 +0000
+------------------------------------------
+
+  Change: 03791dfdfd67a37d4b1e1bbaa6ffb205de5d8812
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-17 01:42:15 +0000
+
+    release v0.011 
+
+  Change: f2f8c2859790082802bb3081376fca8e862b0e87
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-17 01:41:57 +0000
+
+    prevent undefined warnings 
+
+  Change: f0f2f98f7de5d09fdda18b79440ea95edafcdaf3
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-17 01:29:49 +0000
+
+    add missing options to SYNOPSIS 
+
+  Change: d0d2db78fd057630b66178b430e360b78ff8086f
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-17 01:29:21 +0000
+
+    add --version option
+
+    Fixes #8 
+
+  Change: 985fa901d26d564df1134f4ba3cd1cbbdabe70ad
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-17 00:55:13 +0000
+
+    add raw numbers (int, dec, e, bin, oct, hex)
+
+    These are every number format that Perl or JS supports. We need to
+    eval the bin, oct, and hex so that Perl turns them into actual
+    numbers internally.
+
+    Also add the numeric comparison operators == and != so that we could
+    actually test this thing.
+
+    Fixes #17 
+
+  Change: f9a55189748a57feb2f495a305355b2f9ea263b4
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-17 00:54:32 +0000
+
+    add verbose flag to start writing diagnostics
+
+    Now instead of just deleting the debugging print statements, I can
+    keep them around so other people can debug their own programs!
+
+    Allow setting the verbose flag via an environment variable so that
+    people running the automated tests can use it too.
+
+    Fixes #23 
+
+  Change: 2f7b7d86a75b6eda7f1f3b3bfdf14476adbb0954
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-17 00:12:44 +0000
+
+    switch to using Regexp::Common for delimited text
+
+    This library will be used for numbers and probably brackets pretty
+    soon, because it's better to use other peoples' regexen than make
+    your own. 
+
+  Change: 78bcdfce82eb9ed91d23ff6877a36cac37a3268d
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-16 15:38:22 +0000
+
+    add pipe to use output from EXPR as input to next
+
+    This works like the shell | redirection.
+
+    Not all possible interactions are tested. In particular: `,` and `|`
+    do not play well together, but `,` already does not play well with
+    hash/array constructors...
+
+    Fixes #9 
+
+  Change: 3f576b33c22f9a134bff2e4fb66665ad76f6d173
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-16 15:20:43 +0000
+
+    break tests out into individual categories
+
+    This makes things a bit easier to find, and will help when we start
+    testing interactions between the various features, like how do we do
+    a "then" clause that uses a "," to yield multiple documents?
+
+    Right now, I expect most of the more complicated combinations to
+    simply fail. There's no order of operations / precedence rules, no
+    well-defined associativity, none of the things that a well-made
+    grammar would do... yet.
+
+    At least these tests will help evolve the grammar, but I do
+    anticipate some breaking changes coming quickly... 
+
+------------------------------------------
+version 0.010 at 2014-05-16 15:30:07 +0000
 ------------------------------------------
 
   Change: 42ae53788edcffa9eb9d21a06d7dfdbe10aba0c7

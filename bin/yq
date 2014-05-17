@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yq;
 {
-  $yq::VERSION = '0.010';
+  $yq::VERSION = '0.011';
 }
 # ABSTRACT: Filter YAML through a command-line program
 
@@ -10,9 +10,11 @@ use Pod::Usage::Return qw( pod2usage );
 use Getopt::Long qw( GetOptionsFromArray );
 use YAML;
 use boolean qw( :all );
-use Text::Balanced qw( extract_delimited gen_delimited_pat );
+use Regexp::Common;
 
 $|++; # no buffering
+
+our $VERBOSE = $ENV{YQ_VERBOSE} // 0;
 
 sub empty() {
     bless {}, 'empty';
@@ -26,8 +28,16 @@ sub main {
     my %opt;
     GetOptionsFromArray( \@argv, \%opt,
         'help|h',
+        'verbose|v+',
+        'version',
     );
     return pod2usage(0) if $opt{help};
+    if ( $opt{version} ) {
+        print "yq version $yq::VERSION (Perl $^V)\n";
+        return 0;
+    }
+
+    $VERBOSE //= $opt{verbose};
 
     my $filter = shift @argv;
     return pod2usage("ERROR: Must give a filter") unless $filter;
@@ -89,7 +99,13 @@ sub write {
     }
 }
 
-my $QUOTE_STRING = gen_delimited_pat(q{'"}, q{\\});
+sub diag {
+    my ( $level, $text ) = @_;
+    print STDERR "$text\n" if $VERBOSE >= $level;
+}
+
+my $QUOTE_STRING = $RE{delimited}{-delim=>q{'"}};
+my $EVAL_NUMS = qr{(?:0b$RE{num}{bin}|0$RE{num}{oct}|0x$RE{num}{hex})};
 
 # Match a document path
 my $FILTER = qr{
@@ -99,9 +115,11 @@ my $FILTER = qr{
         |
         $QUOTE_STRING
         |
+        $RE{num}{real}|$EVAL_NUMS
+        |
         \w+ # Constant/bareword
     }x;
-my $OP = qr{eq|ne};
+my $OP = qr{eq|ne|==|!=};
 my $FUNC_NAME = qr{empty|select|grep|group_by};
 my $EXPR = qr{
     \{(\s*$FILTER\s*:\s*(?0)\s*(?:,(?-1))*)\} # Hash constructor
@@ -114,12 +132,25 @@ my $EXPR = qr{
     |
     $FILTER
 }x;
+my $PIPE = qr{[|]};
 
 # Filter MUST NOT mutate $doc!
 sub filter {
     my ( $class, $filter, $doc, $scope ) = @_;
+    if ( $filter =~ $PIPE ) {
+        my @exprs = split /\s*$PIPE\s*/, $filter;
+        my @in = ( $doc );
+        for my $expr ( @exprs ) {
+            my @out = ();
+            for my $doc ( @in ) {
+                push @out, $class->filter( $expr, $doc, $scope );
+            }
+            @in = @out;
+        }
+        return @in;
+    }
     # Hash constructor
-    if ( $filter =~ /^{/ ) {
+    elsif ( $filter =~ /^{/ ) {
         my %out;
         my ( $inner ) = $filter =~ /^\{\s*([^\}]+?)\s*\}$/;
         for my $pair ( split /\s*,\s*/, $inner ) {
@@ -169,6 +200,11 @@ sub filter {
         if ( $filter =~ /^(['"])(.+)(\1)$/ ) {
             return $2;
         }
+        # Eval numbers to allow bin, hex, and oct
+        elsif ( $filter =~ /^$EVAL_NUMS$/ ) {
+            ## no critic ( ProhibitStringyEval )
+            return eval $filter;
+        }
         # Constants/barewords do not begin with .
         elsif ( $filter !~ /^[.]/ ) {
             # If it's not a reserved word, it's a string
@@ -197,21 +233,23 @@ sub filter {
         my ( $lhs_filter, $cond, $rhs_filter ) = ( $1, $2, $3 );
         my $lhs_value = $class->filter( $lhs_filter, $doc );
         my $rhs_value = $class->filter( $rhs_filter, $doc );
+        diag( 1, join " ", "BINOP:", $lhs_value // '<undef>', $cond, $rhs_value // '<undef>' );
         if ( $cond eq 'eq' ) {
-            if ( defined $lhs_value == defined $rhs_value && $lhs_value eq $rhs_value ) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return defined $lhs_value == defined $rhs_value 
+                && $lhs_value eq $rhs_value
+                ? true : false;
         }
         elsif ( $cond eq 'ne' ) {
-            if ( $lhs_value ne $rhs_value ) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return defined $lhs_value != defined $rhs_value
+                || $lhs_value ne $rhs_value ? true : false;
+        }
+        elsif ( $cond eq '==' ) {
+            return defined $lhs_value == defined $rhs_value
+                && $lhs_value == $rhs_value ? true : false;
+        }
+        elsif ( $cond eq '!=' ) {
+            return defined $lhs_value != defined $rhs_value
+                || $lhs_value != $rhs_value ? true : false;
         }
     }
     # If/then (future: else, better conditions)
@@ -251,13 +289,13 @@ yq - Filter YAML through a command-line program
 
 =head1 VERSION
 
-version 0.010
+version 0.011
 
 =head1 SYNOPSIS
 
-    yq <script> [<file>...]
+    yq [-v] <script> [<file>...]
 
-    yq -h|--help
+    yq -h|--help|--version
 
 =head1 DESCRIPTION
 
@@ -277,9 +315,18 @@ specified, filter STDIN.
 
 =head1 OPTIONS
 
+=head2 -v | --verbose
+
+Set verbose mode to print out some internal program messages on STDERR to help
+with debugging.
+
 =head2 -h | --help
 
 Show this help document.
+
+=head2 --version
+
+Print the current yq and Perl versions.
 
 =head1 SYNTAX
 
@@ -589,6 +636,43 @@ output.
     bar
     ---
     fuzz
+
+=item |
+
+Multiple EXPRESSIONS may be separated by pipes to give the output of the left
+expression as the input of the right expression (much like how shell pipes
+work).
+
+    # INPUT
+    foo: bar
+    baz: fuzz
+    pop: more
+    ---
+    foo: buzz
+    baz: fizz
+    pop: jump
+
+    $ yq '{ foo: .foo, val: .pop } | group_by( .foo )'
+    bar:
+        - foo: bar
+          val: more
+    buzz:
+        - foo: buzz
+          val: jump
+
+The above example can be useful to avoid C<group_by> memory issues when dealing
+with very large streams: Reduce the size of the working document by keeping
+only the keys you want, then group those documents.
+
+=back
+
+=head1 ENVIRONMENT
+
+=over
+
+=item YQ_VERBOSE
+
+Set the verbosity level. Useful when running the tests.
 
 =back
 
