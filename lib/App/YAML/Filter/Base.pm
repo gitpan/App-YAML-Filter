@@ -1,9 +1,6 @@
 package App::YAML::Filter::Base;
-{
-  $App::YAML::Filter::Base::VERSION = '0.011';
-}
 # ABSTRACT: Base module for App::YAML::Filter
-
+$App::YAML::Filter::Base::VERSION = '0.012';
 use strict;
 use warnings;
 use base 'Import::Base';
@@ -13,6 +10,7 @@ sub modules {
     return (
         strict => [],
         warnings => [],
+        feature => [qw( :5.10 )],
     );
 }
 
@@ -28,7 +26,7 @@ App::YAML::Filter::Base - Base module for App::YAML::Filter
 
 =head1 VERSION
 
-version 0.011
+version 0.012
 
 =head1 AUTHOR
 

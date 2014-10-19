@@ -1,9 +1,6 @@
 package App::YAML::Filter::Test;
-{
-  $App::YAML::Filter::Test::VERSION = '0.011';
-}
 # ABSTRACT: Base module for App::YAML::Filter tests
-
+$App::YAML::Filter::Test::VERSION = '0.012';
 use strict;
 use warnings;
 use base 'App::YAML::Filter::Base';
@@ -13,8 +10,8 @@ sub modules {
     my @modules = $class->SUPER::modules( %args );
     return (
         @modules,
+        qw( Test::More Test::Deep Test::Exception Test::Differences ),
         FindBin => [ '$Bin' ],
-        'Test::Most' => [],
         boolean => [':all'],
     );
 }
@@ -31,7 +28,7 @@ App::YAML::Filter::Test - Base module for App::YAML::Filter tests
 
 =head1 VERSION
 
-version 0.011
+version 0.012
 
 =head1 AUTHOR
 

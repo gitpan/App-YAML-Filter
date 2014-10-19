@@ -1,9 +1,299 @@
 ==================================================
-Changes from 2013-05-17 00:00:00 +0000 to present.
+Changes from 2013-10-19 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.011 at 2014-05-17 06:42:28 +0000
+version 0.012 at 2014-10-19 22:25:53 +0000
+------------------------------------------
+
+  Change: 90495a14bc41cb68e324598f14456d940b95cb59
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-10-19 17:25:41 +0000
+
+    release v0.012 
+
+  Change: 4f38e20b004d974de63d88c746d37efeceb990d4
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-10-19 00:00:30 +0000
+
+    add yfrom script to output YAML from JSON or CSV
+
+    yfrom and yto are the sentinels to get data into the internal format
+    used by yq and the other, future tools. 
+
+  Change: 3976d7917a0d619f419796c9436404d5ac7d3648
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-10-18 22:47:19 +0000
+
+    remove references to Test::Most 
+
+  Change: 198acbb5f380baa5ece2d0e5b62f5e9bff9bba28
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-10-18 22:37:17 +0000
+
+    add Marpa::R2 prereq
+
+    We need to only use one of these prereqs, or split up this dist into
+    multiple things... 
+
+  Change: 7fc32e215a8f21ee0e01c0f1e67accf1090476ec
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-10-18 22:31:17 +0000
+
+    add travis config 
+
+  Change: f58890bc17ac6e9c4d8515cb05e5e76175fd86a4
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-10-18 22:29:03 +0000
+
+    add yto script to convert from YAML to other formats
+
+    Currently only JSON is supported, and only if the user has JSON::XS
+    (from CPAN) or JSON::PP (core since 5.14) 
+
+  Change: bd9747ee0204fc41d6ddfb61792b3ba8984963b7
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-10-18 22:28:36 +0000
+
+    always use 5.10 features
+
+    We require 5.10 for recursive regex, so always enable "say" and
+    "state" 
+
+  Change: 6f3001a9d64f5aff8dc5eafbb4ecfc020bbbbb7f
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-10-18 22:27:58 +0000
+
+    move away from Test::Most
+
+    Our own Import::Base is also being used, so we only need one 
+
+  Change: 57be0bd53f8f8722652d0ce961e22e5284f54607
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-23 23:39:41 +0000
+
+    add an initial Marpa::R2 parser
+
+    This simply does the parse tree and nothing else. The actual
+    interpreting is just a Simple Matter of Programming. 
+
+  Change: 0236f1459c694758d352d7dfa3fa97dccab8352f
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-22 23:58:55 +0000
+
+    start on a parse-tree-based P::RD implementation
+
+    This implementation lets us prepare the filter first, then run
+    through the resulting parse tree (much like an AST). 
+
+  Change: 54ca82c841e505bc90995d64c698a7ade9eedd62
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-22 23:57:45 +0000
+
+    int rule is unnecessary since float covers ints
+
+    Though this leaves us open to array indexing with floats, which
+    probably won't work... Maybe we need intlike and numberlike... 
+
+  Change: bf97a7fa40e3dc1c3cb4427e560c17e9d7baf92a
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-18 23:19:23 +0000
+
+    add some preprocessing to fix pipes
+
+    This gets around the order of Parse::RecDescent's interpretation, but
+    it's not a good plan. The tree parse is a much better plan. 
+
+  Change: 0cdca4825e889993598214e2035793e95d74852e
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 01:44:38 +0000
+
+    fix comma combinator
+
+    Fun story: This interpreted method will not work for pipe
+    combinators, since by the time the pipe is being interpreted, both
+    sides of the pipe have already been evaluated.
+
+    P::RD does make it very easy to build a parse tree though, so perhaps
+    we'll start from that and build an interpreter of that parse tree. 
+
+  Change: fdd6bb511c5941f986acdd510171653b10f44651
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 01:37:54 +0000
+
+    undef is a valid value, so return an empty list 
+
+  Change: db8f2e3ffdada6c45e5d5595dcd170dc03e1968a
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 00:49:29 +0000
+
+    put use lines at the top of the parse
+
+    The initial actions is for global stuff, much like a module's initial
+    lines 
+
+  Change: 3cef00015fe3994994b5cf92a02383528e296469
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 00:20:08 +0000
+
+    fix the order of <|> and <=|>=
+
+    We must put the <= first, so that > doesn't get matched and leave a
+    dangling "=" that doesn't match anything 
+
+  Change: 07f5af20483ce34d09e678f3a2ab7cdc6a90e9ab
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 00:19:24 +0000
+
+    use eval to get rid of the literal quote characters
+
+    Internally, quoted strings don't have the opening and closing quotes,
+    they're just for the parser. 
+
+  Change: b858df8e7f1d13cd4649be8304c83ef6271cd0f5
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 00:19:01 +0000
+
+    add the missing sort function 
+
+  Change: 36e22f1d46e9dc83ccee349b9c657be34bedc54b
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 00:18:06 +0000
+
+    fix the missing empty function 
+
+  Change: d6e1cb1221a2be98cce3830f3a8d4ce7a50e3727
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 00:16:51 +0000
+
+    fix number parsing (int, float, bin, hex, oct)
+
+    We still have to use eval to get Perl to turn them into its internal
+    format. 
+
+  Change: 7f425ef5ae7c98402034a4557f2a3acd2d446473
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-13 00:16:38 +0000
+
+    add list object to differentiate arrays
+
+    Most things can return lists, but some things want to return an
+    array. Since Parse::RecDescent can only return scalars, we need some
+    way of differentiating between a filter or expression returning
+    multiple things, and a filter or expression returning an array.
+
+    A list is just a blessed array and can be flattened. When we only
+    want one thing, a list will take one item, while an array is one
+    thing.
+
+    This is a lot like Perl's way of doing it, except we have to use
+    arrayrefs for both circumstances. 
+
+  Change: d0cd11a7cc4e08ab35d77a1e89b664091119385e
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-05 22:50:57 +0000
+
+    SurgicalPodWeaver -> PodWeaver
+
+    SurgicalPodWeaver is broken, and all our files should be using
+    PodWeaver anyway. 
+
+  Change: a10a27d56cc2d5605546c61c61ae6e931d7ce40a
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-05 22:50:57 +0000
+
+    initial test Parse::RecDescent implementation
+
+    I'm going to throw this away, because I absolutely do not understand
+    it anymore. Going to try a different tactic... 
+
+  Change: 5188d986f0e379b6c67efdd8c67e5de79cb8edbb
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-07-05 22:50:57 +0000
+
+    load the underlying interpreter at runtime 
+
+  Change: a26cf9e93cf0e66c957b7668abfecc667ab826c9
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-23 15:50:34 +0000
+
+    add sort(EXPR) function to sort by string
+
+    This does not support numeric sorting. Like group_by(EXPR), this
+    buffers the output. Like all functions that use scope, this probably
+    will not work in assignment.
+
+    I'm not sure how I want to do numeric sorting. Probably as a first
+    argument of some kind. Maybe if sort took two EXPRs and we added the
+    <=> and cmp binary operators, and the magic $a and $b variables...
+
+    Fixes #12 
+
+  Change: 36e761fdb4c87f0e4fc2a3288f2c3adbf7f152b8
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-22 02:10:42 +0000
+
+    move the interpreter to a module
+
+    We're going to try Parse::RecDescent and maybe Marpa::R2 as well... 
+
+  Change: 65b6d78d7fbdcbaed14401c5005ae708b83fa135
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-21 18:18:08 +0000
+
+    add <,<=,>,>= numeric comparison operators
+
+    Also clarify the behavior of undef in comparisons. These allow
+    warnings if either side is undef. We should not suppress these
+    warnings, though we may have a way to ensure more robust coding in
+    the future...
+
+    Fixes #30 
+
+  Change: 42c5051ea50d0547fd3606de3c48afb66d8bd451
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-21 17:23:08 +0000
+
+    test and document the == and != operators 
+
+  Change: 5572be058f3306cef40a615cde767e948c36a3d5
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-21 17:11:44 +0000
+
+    add length( EXPR ) function
+
+    Tries to DWIM as much as possible, though I think numbers are going
+    to be a bit weird (will get the number of base-10 digits no matter
+    what, I suspect, but that's not a use-case I need right now).
+
+    I won't be doing a scalar() alias, but I might consider a count()
+    alias.
+
+    Fixes #28 
+
+  Change: c4d9194ab9275455a151d3ddd531c7921a79aa0d
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2014-05-21 16:35:24 +0000
+
+    add keys(EXPR) function
+
+    The keys function gets the keys of the HASH or ARRAY pointed to by
+    EXPR.
+
+    This function returns an arrayref, but I'm not sure if that's the
+    right idea. We can flatten an arrayref using `keys() | .[]` I guess,
+    so maybe that's the right solution...
+
+    Fixes #27 
+
+  Change: d98b61c25f86620579595b29e203f28d356f6290
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2014-05-17 03:03:28 +0000
+
+    clarify and add some comments during the parsing 
+
+------------------------------------------
+version 0.011 at 2014-05-17 06:42:15 +0000
 ------------------------------------------
 
   Change: 03791dfdfd67a37d4b1e1bbaa6ffb205de5d8812
