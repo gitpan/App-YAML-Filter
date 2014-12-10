@@ -1,804 +1,125 @@
-==================================================
-Changes from 2013-10-19 00:00:00 +0000 to present.
-==================================================
+Changelog for App-YAML-Filter
+
+0.013 2014-12-10T08:04:25
+ - remove the Marpa version for now
+ - fix test failures due to whitespace differences
+ - add IRC link
+ - add ypick for simple field picking
+ - fix "yq::filter used only once" warning
+ - fix differences between JSON::PP and JSON::XS
+ - remove dependency on Marpa for now
+ - only ignore bundles in the dist root
+ - only remove .ini files from the dist root
+ - add dzil tag annotation with name, date, and changelog
+ - update weaver.ini from new defaults
+ - commit new build artifacts
+ - update generated READMEs for status badges
+ - update dist.ini for new best practices
+
+0.012 2014-10-19T22:25:41
+ - release v0.012
+ - add yfrom script to output YAML from JSON or CSV
+ - remove references to Test::Most
+ - add Marpa::R2 prereq
+ - add travis config
+ - add yto script to convert from YAML to other formats
+ - always use 5.10 features
+ - move away from Test::Most
+ - add an initial Marpa::R2 parser
+ - start on a parse-tree-based P::RD implementation
+ - int rule is unnecessary since float covers ints
+ - add some preprocessing to fix pipes
+ - fix comma combinator
+ - undef is a valid value, so return an empty list
+ - put use lines at the top of the parse
+ - fix the order of <|> and <=|>=
+ - use eval to get rid of the literal quote characters
+ - add the missing sort function
+ - fix the missing empty function
+ - fix number parsing (int, float, bin, hex, oct)
+ - add list object to differentiate arrays
+ - SurgicalPodWeaver -> PodWeaver
+ - initial test Parse::RecDescent implementation
+ - load the underlying interpreter at runtime
+ - add sort(EXPR) function to sort by string
+ - move the interpreter to a module
+ - add <,<=,>,>= numeric comparison operators
+ - test and document the == and != operators
+ - add length( EXPR ) function
+ - add keys(EXPR) function
+ - clarify and add some comments during the parsing
+
+0.011 2014-05-17T06:42:15
+ - release v0.011
+ - prevent undefined warnings
+ - add missing options to SYNOPSIS
+ - add --version option
+ - add raw numbers (int, dec, e, bin, oct, hex)
+ - add verbose flag to start writing diagnostics
+ - switch to using Regexp::Common for delimited text
+ - add pipe to use output from EXPR as input to next
+ - break tests out into individual categories
+
+0.010 2014-05-16T15:30:07
+ - add quoted strings using Text::Balanced
+
+0.009 2014-05-16T06:22:49
+ - release 0.009
+ - add hash and array constructors
+ - add group_by( EXPR ) function
+
+0.008 2014-05-14T05:05:14
+ - release v0.008
+ - turn off STDOUT buffering
+ - add note to grep() instead of using `if/else empty`
+ - implement grep(EXPR)
+ - allow `if .foo then .bar` for truthiness checking
+
+0.007 2014-05-09T04:27:11
+ - update build artifacts for v0.007
+ - test that -h and error messages are correct
+
+0.006 2014-05-09T02:41:31
+ - update build artifacts
+ - fix -h and --help option
+
+0.005 2014-05-07T03:45:17
+ - update build artifacts
+ - add .[] to flatten an array
+ - add , operator to join multiple filters
+ - forgot the test file needed for filename arg test
+ - allow filenames to be given as further arguments
+ - prevent "undefined" warnings
+ - filter documents that have no document separator
+ - prepare for using STDERR as an error channel
+
+0.004 2014-05-03T03:30:31
+ - increase required Getopt::Long version
+
+0.003 2014-05-01T05:54:23
+ - update build artifacts
+ - document the help option
+ - fix POD errors
+
+0.002 2014-05-01T05:34:09
+ - update build artifacts
+ - add array filters and allow combining filters
+
+0.001 2014-04-30T05:55:50
+ - fix gitignore for the app rename
+ - update build artifacts
+ - migrate to Import::Base
+ - rename to App-YAML-Filter
+ - document the else clause and the empty value
+ - add "empty" special value to suppress printing undef documents
+ - support else clauses in if statements
+ - don't need to collect output as we're only working with one document
+ - mark executables as executable
+ - forgot to import pod2usage
+ - add shebang line and remove modeline
+ - add URL for jq project
+ - remove <> because it's POD syntax and markdown thinks it's HTML
+ - add build artifacts
+ - add initial use-case - filtering documents based on a hash key
+ - initial skeleton
 
-------------------------------------------
-version 0.012 at 2014-10-19 22:25:53 +0000
-------------------------------------------
-
-  Change: 90495a14bc41cb68e324598f14456d940b95cb59
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-10-19 17:25:41 +0000
-
-    release v0.012 
-
-  Change: 4f38e20b004d974de63d88c746d37efeceb990d4
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-10-19 00:00:30 +0000
-
-    add yfrom script to output YAML from JSON or CSV
-
-    yfrom and yto are the sentinels to get data into the internal format
-    used by yq and the other, future tools. 
-
-  Change: 3976d7917a0d619f419796c9436404d5ac7d3648
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-10-18 22:47:19 +0000
-
-    remove references to Test::Most 
-
-  Change: 198acbb5f380baa5ece2d0e5b62f5e9bff9bba28
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-10-18 22:37:17 +0000
-
-    add Marpa::R2 prereq
-
-    We need to only use one of these prereqs, or split up this dist into
-    multiple things... 
-
-  Change: 7fc32e215a8f21ee0e01c0f1e67accf1090476ec
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-10-18 22:31:17 +0000
-
-    add travis config 
-
-  Change: f58890bc17ac6e9c4d8515cb05e5e76175fd86a4
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-10-18 22:29:03 +0000
-
-    add yto script to convert from YAML to other formats
-
-    Currently only JSON is supported, and only if the user has JSON::XS
-    (from CPAN) or JSON::PP (core since 5.14) 
-
-  Change: bd9747ee0204fc41d6ddfb61792b3ba8984963b7
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-10-18 22:28:36 +0000
-
-    always use 5.10 features
-
-    We require 5.10 for recursive regex, so always enable "say" and
-    "state" 
-
-  Change: 6f3001a9d64f5aff8dc5eafbb4ecfc020bbbbb7f
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-10-18 22:27:58 +0000
-
-    move away from Test::Most
-
-    Our own Import::Base is also being used, so we only need one 
-
-  Change: 57be0bd53f8f8722652d0ce961e22e5284f54607
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-23 23:39:41 +0000
-
-    add an initial Marpa::R2 parser
-
-    This simply does the parse tree and nothing else. The actual
-    interpreting is just a Simple Matter of Programming. 
-
-  Change: 0236f1459c694758d352d7dfa3fa97dccab8352f
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-22 23:58:55 +0000
-
-    start on a parse-tree-based P::RD implementation
-
-    This implementation lets us prepare the filter first, then run
-    through the resulting parse tree (much like an AST). 
-
-  Change: 54ca82c841e505bc90995d64c698a7ade9eedd62
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-22 23:57:45 +0000
-
-    int rule is unnecessary since float covers ints
-
-    Though this leaves us open to array indexing with floats, which
-    probably won't work... Maybe we need intlike and numberlike... 
-
-  Change: bf97a7fa40e3dc1c3cb4427e560c17e9d7baf92a
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-18 23:19:23 +0000
-
-    add some preprocessing to fix pipes
-
-    This gets around the order of Parse::RecDescent's interpretation, but
-    it's not a good plan. The tree parse is a much better plan. 
-
-  Change: 0cdca4825e889993598214e2035793e95d74852e
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 01:44:38 +0000
-
-    fix comma combinator
-
-    Fun story: This interpreted method will not work for pipe
-    combinators, since by the time the pipe is being interpreted, both
-    sides of the pipe have already been evaluated.
-
-    P::RD does make it very easy to build a parse tree though, so perhaps
-    we'll start from that and build an interpreter of that parse tree. 
-
-  Change: fdd6bb511c5941f986acdd510171653b10f44651
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 01:37:54 +0000
-
-    undef is a valid value, so return an empty list 
-
-  Change: db8f2e3ffdada6c45e5d5595dcd170dc03e1968a
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 00:49:29 +0000
-
-    put use lines at the top of the parse
-
-    The initial actions is for global stuff, much like a module's initial
-    lines 
-
-  Change: 3cef00015fe3994994b5cf92a02383528e296469
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 00:20:08 +0000
-
-    fix the order of <|> and <=|>=
-
-    We must put the <= first, so that > doesn't get matched and leave a
-    dangling "=" that doesn't match anything 
-
-  Change: 07f5af20483ce34d09e678f3a2ab7cdc6a90e9ab
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 00:19:24 +0000
-
-    use eval to get rid of the literal quote characters
-
-    Internally, quoted strings don't have the opening and closing quotes,
-    they're just for the parser. 
-
-  Change: b858df8e7f1d13cd4649be8304c83ef6271cd0f5
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 00:19:01 +0000
-
-    add the missing sort function 
-
-  Change: 36e22f1d46e9dc83ccee349b9c657be34bedc54b
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 00:18:06 +0000
-
-    fix the missing empty function 
-
-  Change: d6e1cb1221a2be98cce3830f3a8d4ce7a50e3727
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 00:16:51 +0000
-
-    fix number parsing (int, float, bin, hex, oct)
-
-    We still have to use eval to get Perl to turn them into its internal
-    format. 
-
-  Change: 7f425ef5ae7c98402034a4557f2a3acd2d446473
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-13 00:16:38 +0000
-
-    add list object to differentiate arrays
-
-    Most things can return lists, but some things want to return an
-    array. Since Parse::RecDescent can only return scalars, we need some
-    way of differentiating between a filter or expression returning
-    multiple things, and a filter or expression returning an array.
-
-    A list is just a blessed array and can be flattened. When we only
-    want one thing, a list will take one item, while an array is one
-    thing.
-
-    This is a lot like Perl's way of doing it, except we have to use
-    arrayrefs for both circumstances. 
-
-  Change: d0cd11a7cc4e08ab35d77a1e89b664091119385e
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-05 22:50:57 +0000
-
-    SurgicalPodWeaver -> PodWeaver
-
-    SurgicalPodWeaver is broken, and all our files should be using
-    PodWeaver anyway. 
-
-  Change: a10a27d56cc2d5605546c61c61ae6e931d7ce40a
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-05 22:50:57 +0000
-
-    initial test Parse::RecDescent implementation
-
-    I'm going to throw this away, because I absolutely do not understand
-    it anymore. Going to try a different tactic... 
-
-  Change: 5188d986f0e379b6c67efdd8c67e5de79cb8edbb
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-07-05 22:50:57 +0000
-
-    load the underlying interpreter at runtime 
-
-  Change: a26cf9e93cf0e66c957b7668abfecc667ab826c9
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-23 15:50:34 +0000
-
-    add sort(EXPR) function to sort by string
-
-    This does not support numeric sorting. Like group_by(EXPR), this
-    buffers the output. Like all functions that use scope, this probably
-    will not work in assignment.
-
-    I'm not sure how I want to do numeric sorting. Probably as a first
-    argument of some kind. Maybe if sort took two EXPRs and we added the
-    <=> and cmp binary operators, and the magic $a and $b variables...
-
-    Fixes #12 
-
-  Change: 36e761fdb4c87f0e4fc2a3288f2c3adbf7f152b8
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-22 02:10:42 +0000
-
-    move the interpreter to a module
-
-    We're going to try Parse::RecDescent and maybe Marpa::R2 as well... 
-
-  Change: 65b6d78d7fbdcbaed14401c5005ae708b83fa135
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-21 18:18:08 +0000
-
-    add <,<=,>,>= numeric comparison operators
-
-    Also clarify the behavior of undef in comparisons. These allow
-    warnings if either side is undef. We should not suppress these
-    warnings, though we may have a way to ensure more robust coding in
-    the future...
-
-    Fixes #30 
-
-  Change: 42c5051ea50d0547fd3606de3c48afb66d8bd451
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-21 17:23:08 +0000
-
-    test and document the == and != operators 
-
-  Change: 5572be058f3306cef40a615cde767e948c36a3d5
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-21 17:11:44 +0000
-
-    add length( EXPR ) function
-
-    Tries to DWIM as much as possible, though I think numbers are going
-    to be a bit weird (will get the number of base-10 digits no matter
-    what, I suspect, but that's not a use-case I need right now).
-
-    I won't be doing a scalar() alias, but I might consider a count()
-    alias.
-
-    Fixes #28 
-
-  Change: c4d9194ab9275455a151d3ddd531c7921a79aa0d
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-21 16:35:24 +0000
-
-    add keys(EXPR) function
-
-    The keys function gets the keys of the HASH or ARRAY pointed to by
-    EXPR.
-
-    This function returns an arrayref, but I'm not sure if that's the
-    right idea. We can flatten an arrayref using `keys() | .[]` I guess,
-    so maybe that's the right solution...
-
-    Fixes #27 
-
-  Change: d98b61c25f86620579595b29e203f28d356f6290
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-17 03:03:28 +0000
-
-    clarify and add some comments during the parsing 
-
-------------------------------------------
-version 0.011 at 2014-05-17 06:42:15 +0000
-------------------------------------------
-
-  Change: 03791dfdfd67a37d4b1e1bbaa6ffb205de5d8812
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-17 01:42:15 +0000
-
-    release v0.011 
-
-  Change: f2f8c2859790082802bb3081376fca8e862b0e87
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-17 01:41:57 +0000
-
-    prevent undefined warnings 
-
-  Change: f0f2f98f7de5d09fdda18b79440ea95edafcdaf3
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-17 01:29:49 +0000
-
-    add missing options to SYNOPSIS 
-
-  Change: d0d2db78fd057630b66178b430e360b78ff8086f
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-17 01:29:21 +0000
-
-    add --version option
-
-    Fixes #8 
-
-  Change: 985fa901d26d564df1134f4ba3cd1cbbdabe70ad
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-17 00:55:13 +0000
-
-    add raw numbers (int, dec, e, bin, oct, hex)
-
-    These are every number format that Perl or JS supports. We need to
-    eval the bin, oct, and hex so that Perl turns them into actual
-    numbers internally.
-
-    Also add the numeric comparison operators == and != so that we could
-    actually test this thing.
-
-    Fixes #17 
-
-  Change: f9a55189748a57feb2f495a305355b2f9ea263b4
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-17 00:54:32 +0000
-
-    add verbose flag to start writing diagnostics
-
-    Now instead of just deleting the debugging print statements, I can
-    keep them around so other people can debug their own programs!
-
-    Allow setting the verbose flag via an environment variable so that
-    people running the automated tests can use it too.
-
-    Fixes #23 
-
-  Change: 2f7b7d86a75b6eda7f1f3b3bfdf14476adbb0954
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-17 00:12:44 +0000
-
-    switch to using Regexp::Common for delimited text
-
-    This library will be used for numbers and probably brackets pretty
-    soon, because it's better to use other peoples' regexen than make
-    your own. 
-
-  Change: 78bcdfce82eb9ed91d23ff6877a36cac37a3268d
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-16 15:38:22 +0000
-
-    add pipe to use output from EXPR as input to next
-
-    This works like the shell | redirection.
-
-    Not all possible interactions are tested. In particular: `,` and `|`
-    do not play well together, but `,` already does not play well with
-    hash/array constructors...
-
-    Fixes #9 
-
-  Change: 3f576b33c22f9a134bff2e4fb66665ad76f6d173
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-16 15:20:43 +0000
-
-    break tests out into individual categories
-
-    This makes things a bit easier to find, and will help when we start
-    testing interactions between the various features, like how do we do
-    a "then" clause that uses a "," to yield multiple documents?
-
-    Right now, I expect most of the more complicated combinations to
-    simply fail. There's no order of operations / precedence rules, no
-    well-defined associativity, none of the things that a well-made
-    grammar would do... yet.
-
-    At least these tests will help evolve the grammar, but I do
-    anticipate some breaking changes coming quickly... 
-
-------------------------------------------
-version 0.010 at 2014-05-16 15:30:07 +0000
-------------------------------------------
-
-  Change: 42ae53788edcffa9eb9d21a06d7dfdbe10aba0c7
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-16 10:30:07 +0000
-
-    Release v0.010 
-
-  Change: 5713f4119708efdb55cf30b0ace840d9e90ee436
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-16 10:29:05 +0000
-
-    add quoted strings using Text::Balanced
-
-    This lets us have matching against things like "BAR/NONE". Though
-    Perl will allow us to treat "0.313" as a number, we do not yet allow
-    0.313 as an unquoted string. 
-
-------------------------------------------
-version 0.009 at 2014-05-16 06:22:49 +0000
-------------------------------------------
-
-  Change: 18ecfc725689425a64d264ade542a3958629bad7
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-16 01:22:49 +0000
-
-    release 0.009 
-
-  Change: 5b3a24a59bdd7a6873f1da2d1adc57d0015e498d
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-16 01:19:15 +0000
-
-    add hash and array constructors
-
-    This way we can filter documents to build other documents.
-
-    When pipes come in, this will become a lot more useful.
-
-    Fixes #13 
-
-  Change: 307b641dfb75bc071a61787992da03ff9017876c
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-15 23:57:51 +0000
-
-    add group_by( EXPR ) function
-
-    The filter program now has a "scope", which persists information
-    between documents. This makes `jq`'s -s (slurp) function unnecessary,
-    since the collection functions will always assume that they are
-    working on an array (at the highest level, the stream of documents).
-
-    I have not tested all possible interactions of this function. I am
-    fairly certain there are bugs lurking here. Pipes will probably end
-    up revealing them...
-
-    We may need to break up the test script into individual items soon...
-
-    Fixes #15 
-
-------------------------------------------
-version 0.008 at 2014-05-14 05:05:14 +0000
-------------------------------------------
-
-  Change: 91eac4bb2bd08fdcfb3e052dc685b2bc77aafac9
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-14 00:05:14 +0000
-
-    release v0.008 
-
-  Change: 9f8b6f277d07c4fc10c4df49397773a40283aebb
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-13 18:24:24 +0000
-
-    turn off STDOUT buffering
-
-    The buffer appears to be quite large... 
-
-  Change: dad0baec4058a9799311aa391fc0f43fc7cb76b6
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-13 18:21:49 +0000
-
-    add note to grep() instead of using `if/else empty` 
-
-  Change: cfe39aaed1813ad7ea3f1e8a654a79a011f2fc63
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-13 18:00:24 +0000
-
-    implement grep(EXPR)
-
-    This is also known as select(EXPR) for the jq folk.
-
-    Generalized the function parser to make it easier to add new
-    functions. `empty` is a function that takes no argument (though we do
-    not yet put it in the FUNCTIONS part of the docs).
-
-    Our recursive regex forces us to require Perl 5.10. I don't think
-    this is unreasonable, even ancient CentOS has 5.10 installed...
-
-    Fixes #7 
-
-  Change: 8644fbcf49f34447d0e5a9d13afeb15f6cd0f72a
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-13 17:30:45 +0000
-
-    allow `if .foo then .bar` for truthiness checking
-
-    This commit smartens up the parser quite a bit, allowing a more
-    generalized `if EXPR then FILTER else FILTER` syntax. EXPR is allowed
-    to be either FILTER or `FILTER OP FILTER`. FILTER is allowed to be
-    either a document path or a bareword string.
-
-    YAML doesn't seem to like the `boolean` module, which isn't nice...
-
-    Fixes #6 
-
-------------------------------------------
-version 0.007 at 2014-05-09 04:27:11 +0000
-------------------------------------------
-
-  Change: 55bf3d50e5bea71f9d888b12d8c6038666967dee
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-08 23:27:11 +0000
-
-    update build artifacts for v0.007 
-
-  Change: 826277cd12c10d05d31cb5581f210bda67ca90ca
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-08 23:17:51 +0000
-
-    test that -h and error messages are correct
-
-    This required switching to the newly-minted Pod::Usage::Return, which
-    prevents Pod::Usage from exiting. 
-
-------------------------------------------
-version 0.006 at 2014-05-09 02:41:31 +0000
-------------------------------------------
-
-  Change: 4ff770136dbb2f3c9a17bf3e1d75c4543c5cf5af
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-08 21:41:31 +0000
-
-    update build artifacts 
-
-  Change: 2342faa8b0f9a5bcc7a0f1fb143fee6f91260865
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-08 21:40:59 +0000
-
-    fix -h and --help option 
-
-------------------------------------------
-version 0.005 at 2014-05-07 03:45:17 +0000
-------------------------------------------
-
-  Change: dac4b1dc58d8fdd42bb642c84717b19f46d1c91f
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-06 22:45:17 +0000
-
-    update build artifacts 
-
-  Change: 8748e3496e91ba05669618949c643f772428cbea
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-06 22:42:55 +0000
-
-    add .[] to flatten an array
-
-    Fixes #5 
-
-  Change: d9b7393a6a25f7232fee77bcdd8909930f3e0f46
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-06 22:17:00 +0000
-
-    add , operator to join multiple filters
-
-    Fixes #4 
-
-  Change: 00b5737dfb29160b6d766c2ed82aa21ef3ccdf44
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-06 22:16:12 +0000
-
-    forgot the test file needed for filename arg test 
-
-  Change: a373938c8f3460f7c72df103fabbafc6ff3b4668
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-06 22:14:47 +0000
-
-    allow filenames to be given as further arguments
-
-    We're doing the <> operator manually for easier testing and because
-    our arguments are not necessarily in @ARGV.
-
-    Fixes #2 
-
-  Change: 6683908297270f49f7afe03050fd5e3662621104
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-06 14:35:19 +0000
-
-    prevent "undefined" warnings
-
-    If the definedness of each side of a comparison isn't equal, the
-    comparison cannot be equal.
-
-    I just now realized that this is completely wrong and will not
-    prevent all the definedness warnings... 
-
-  Change: 7591420da4669534e3da4543575bf2e62b1ebf80
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-06 14:34:25 +0000
-
-    filter documents that have no document separator
-
-    /^---/ is more of a "document header" than anything. If there isn't
-    any document header, and no --- at the end, we should still filter
-    the yaml. 
-
-  Change: cf00cae2ade1b7823c0ee4ad5eb0d21e9b15ed0c
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-05-06 14:33:11 +0000
-
-    prepare for using STDERR as an error channel
-
-    We'll spit out any YAML parsing errors to STDERR so that the output
-    channel remains clean and completely YAML 
-
-------------------------------------------
-version 0.004 at 2014-05-03 03:30:31 +0000
-------------------------------------------
-
-  Change: 6aefea733212862be2d8b5012af844f48b73e853
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-02 22:30:31 +0000
-
-    increase required Getopt::Long version
-
-    GetOptionsFromArray was added in 2.36 
-
-------------------------------------------
-version 0.003 at 2014-05-01 05:54:23 +0000
-------------------------------------------
-
-  Change: 8d5b8ca50206b515643e6eca50a7cc7225a67e6b
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-01 00:54:23 +0000
-
-    update build artifacts 
-
-  Change: 1b751b03774aa499c54c8861ff4a1bd8c3cc5de0
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-01 00:54:06 +0000
-
-    document the help option 
-
-  Change: 280810dc085a7c438df480afc76928a3fb22f605
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-01 00:53:21 +0000
-
-    fix POD errors 
-
-------------------------------------------
-version 0.002 at 2014-05-01 05:34:09 +0000
-------------------------------------------
-
-  Change: e064953d4e50d9c8deed5268ae8ad72fb84ace18
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-01 00:34:09 +0000
-
-    update build artifacts 
-
-  Change: 734cc7cc6f61472c3686dd355f2cbd82db67b7dc
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-05-01 00:32:50 +0000
-
-    add array filters and allow combining filters
-
-    These regex parsers are going to quickly become untenable unless I do
-    something. jq is written in C and is basically standalone, is that
-    where I should go with this? 
-
-------------------------------------------
-version 0.001 at 2014-04-30 05:55:50 +0000
-------------------------------------------
-
-  Change: a7ddd3fdf118575f95f3cdf964756e3efcb450ad
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-04-30 00:55:50 +0000
-
-    fix gitignore for the app rename
-
-    I keep forgetting that .gitignore has specific lines for the build
-    directories... 
-
-  Change: ef3778139eaef637fd2991413b044e4a72a2c587
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-04-30 00:55:16 +0000
-
-    update build artifacts 
-
-  Change: baa8ad66e528fb81e4b0c7399138921b645feefb
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-04-30 00:52:55 +0000
-
-    migrate to Import::Base 
-
-  Change: bb1dd55c488426d3f89e11fc4811f6ee01c3ec47
-  Author: Doug Bell <madcityzen@gmail.com>
-  Date : 2014-04-30 00:51:40 +0000
-
-    rename to App-YAML-Filter 
-
-  Change: bfad74402bd650f703eebb6185647a40d1e13661
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 19:53:48 +0000
-
-    update build artifacts 
-
-  Change: 11989b63117b4e01c2c774a8ea367707cd7c6e35
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 19:53:30 +0000
-
-    document the else clause and the empty value 
-
-  Change: 7704fd1517efd49807316a38e77aa505829428c7
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 19:48:19 +0000
-
-    add "empty" special value to suppress printing undef documents
-
-    If your filter produces an undefined value, usually "--- ~" gets
-    printed, which is ugly. Now, if your filter produces the special
-    value "empty", the document won't be printed at all.
-
-    This is straight from jq. 
-
-  Change: 44b33141784d4734cd35d6ea83cd3ff35e550d28
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 19:47:53 +0000
-
-    support else clauses in if statements 
-
-  Change: d7bc53c7a583cb8c50b39779f5879ac82779bcad
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 19:46:01 +0000
-
-    don't need to collect output as we're only working with one document
-
-    We may need to bring this back if/when we support pipes or other
-    kinds of complex filters. 
-
-  Change: dc4add1c9c95a5e6d5e444cfcdd36ca00f9eda1a
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 18:03:18 +0000
-
-    mark executables as executable 
-
-  Change: f8659a8f678c2f3a672394f3426a5283dbadf165
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 18:02:49 +0000
-
-    forgot to import pod2usage 
-
-  Change: d6c4c71f0447c39ce2a4beb8f6920597ef576053
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 18:01:41 +0000
-
-    add shebang line and remove modeline
-
-    Turns out vim uses the shebang line to determine the file format, so
-    we don't need the modeline anymore! 
-
-  Change: 917d4e2a070a3c1111e9f0864e81d855c78f5359
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 18:00:10 +0000
-
-    add URL for jq project 
-
-  Change: 7cec8c13c1fb37ca000742c31e69b3ac2cb5b6ff
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 17:58:44 +0000
-
-    remove <> because it's POD syntax and markdown thinks it's HTML 
-
-  Change: 75409ccd2058c4f3591258a414118c042504d741
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 17:45:00 +0000
-
-    add build artifacts 
-
-  Change: 99c892487c24a70b281c3bbfeb0dec88954e86a3
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 17:36:23 +0000
-
-    add initial use-case - filtering documents based on a hash key
-
-    This includes being able to filter a single key in a document hash,
-    being able to simply pass-through an entire document, being able to
-    perform a quick equals test on the results of two filters, and
-    allowing bare values to pass through. 
-
-  Change: 435cc5fcd8f46e0242c002c47041186ba8614000
-  Author: Doug Bell <doug.bell@baml.com>
-  Date : 2014-04-23 16:17:23 +0000
-
-    initial skeleton 
-
-================
-End of releases.
-================

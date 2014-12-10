@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yto;
 # ABSTRACT: Change YAML to another format (like JSON)
-$yto::VERSION = '0.012';
+$yto::VERSION = '0.013';
 use App::YAML::Filter::Base;
 use Pod::Usage::Return qw( pod2usage );
 use Getopt::Long qw( GetOptionsFromArray );
@@ -77,11 +77,11 @@ my %FORMAT_MODULES = (
 # Hash of MODULE => formatter sub
 my %FORMAT_SUB = (
     'JSON::XS' => sub {
-        state $json = JSON::XS->new->canonical->pretty->indent_length(2)->allow_nonref;
-        return join "\n", map { $json->encode( $_ ) } @_;
+        state $json = JSON::XS->new->canonical->pretty->allow_nonref;
+        return join( "\n", map { $json->encode( $_ ) } @_ );
     },
     'JSON::PP' => sub {
-        state $json = JSON::PP->new->canonical->pretty->indent_length(2)->allow_nonref;
+        state $json = JSON::PP->new->canonical->pretty->indent_length(3)->allow_nonref;
         return join "\n", map { $json->encode( $_ ) } @_;
     },
 );
@@ -128,7 +128,7 @@ yto - Change YAML to another format (like JSON)
 
 =head1 VERSION
 
-version 0.012
+version 0.013
 
 =head1 SYNOPSIS
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yq;
 # ABSTRACT: Filter YAML through a command-line program
-$yq::VERSION = '0.012';
+$yq::VERSION = '0.013';
 use App::YAML::Filter::Base;
 use Pod::Usage::Return qw( pod2usage );
 use Getopt::Long qw( GetOptionsFromArray );
@@ -102,6 +102,7 @@ $ENV{YQ_CLASS} ||= 'App::YAML::Filter::Regex';
 use_module( $ENV{YQ_CLASS} );
 {
     no strict 'refs';
+    no warnings 'once';
     *filter = *{ $ENV{YQ_CLASS} . "::filter" };
 }
 
@@ -128,7 +129,7 @@ yq - Filter YAML through a command-line program
 
 =head1 VERSION
 
-version 0.012
+version 0.013
 
 =head1 SYNOPSIS
 

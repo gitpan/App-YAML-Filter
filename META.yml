@@ -14,17 +14,17 @@ configure_requires:
   ExtUtils::MakeMaker: '0'
   Module::Build: '0.28'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.140640'
+generated_by: 'Dist::Zilla version 5.023, CPAN::Meta::Converter version 2.142690'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
 name: App-YAML-Filter
 requires:
+  Data::Partial::Google: '0'
   File::Spec: '0'
   Getopt::Long: '2.36'
   Import::Base: '0'
-  Marpa::R2: '0'
   Module::Runtime: '0'
   Parse::RecDescent: '0'
   Pod::Usage::Return: '0'
@@ -33,7 +33,9 @@ requires:
   boolean: '0'
   perl: '5.010'
 resources:
+  IRC: irc://irc.perl.org/#yertl
   bugtracker: https://github.com/preaction/App-YAML-Filter/issues
   homepage: https://github.com/preaction/App-YAML-Filter
   repository: https://github.com/preaction/App-YAML-Filter.git
-version: '0.012'
+version: '0.013'
+x_authority: cpan:PREACTION
