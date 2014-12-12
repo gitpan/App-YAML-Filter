@@ -1,6 +1,6 @@
 package App::YAML::Filter::RecDescent;
 # ABSTRACT: A Parse::RecDescent-based parser for programs
-$App::YAML::Filter::RecDescent::VERSION = '0.013';
+$App::YAML::Filter::RecDescent::VERSION = '0.014';
 use App::YAML::Filter::Base;
 use boolean qw( :all );
 use Parse::RecDescent;
@@ -300,7 +300,7 @@ App::YAML::Filter::RecDescent - A Parse::RecDescent-based parser for programs
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =head1 AUTHOR
 

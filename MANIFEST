@@ -9,7 +9,7 @@ Makefile.PL
 README
 README.mkdn
 bin/yfrom
-bin/ypick
+bin/ymask
 bin/yq
 bin/yto
 cpanfile
@@ -21,7 +21,7 @@ lib/App/YAML/Filter/Regex.pm
 lib/App/YAML/Filter/Test.pm
 t/00_compile.t
 t/bin/yfrom.t
-t/bin/ypick.t
+t/bin/ymask.t
 t/bin/yto.t
 t/combinator.t
 t/comparison.t

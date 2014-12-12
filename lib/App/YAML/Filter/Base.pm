@@ -1,6 +1,6 @@
 package App::YAML::Filter::Base;
 # ABSTRACT: Base module for App::YAML::Filter
-$App::YAML::Filter::Base::VERSION = '0.013';
+$App::YAML::Filter::Base::VERSION = '0.014';
 use strict;
 use warnings;
 use base 'Import::Base';
@@ -26,7 +26,7 @@ App::YAML::Filter::Base - Base module for App::YAML::Filter
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =head1 AUTHOR
 

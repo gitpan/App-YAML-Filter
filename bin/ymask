@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
-package ypick;
-# ABSTRACT: pick a data structure to display only the desired fields
-$ypick::VERSION = '0.013';
+package ymask;
+# ABSTRACT: Mask a data structure to display only the desired fields
+$ymask::VERSION = '0.014';
 use App::YAML::Filter::Base;
 use Pod::Usage::Return qw( pod2usage );
 use Getopt::Long qw( GetOptionsFromArray );
@@ -19,14 +19,14 @@ sub main {
     );
     return pod2usage(0) if $opt{help};
     if ( $opt{version} ) {
-        print "ypick version $ypick::VERSION (Perl $^V)\n";
+        print "ymask version $ymask::VERSION (Perl $^V)\n";
         return 0;
     }
 
-    my $pick = shift @argv;
-    return pod2usage("ERROR: Must give a pick") unless $pick;
+    my $mask = shift @argv;
+    return pod2usage("ERROR: Must give a mask") unless $mask;
 
-    my $filter = Data::Partial::Google->new( $pick );
+    my $filter = Data::Partial::Google->new( $mask );
 
     push @argv, "-" unless @argv;
     for $ARGV ( @argv ) {
@@ -72,26 +72,26 @@ __END__
 
 =head1 NAME
 
-ypick - pick a data structure to display only the desired fields
+ymask - Mask a data structure to display only the desired fields
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =head1 SYNOPSIS
 
-    ypick <pick> [<file>...]
+    ymask <mask> [<file>...]
 
-    ypick -h|--help|--version
+    ymask -h|--help|--version
 
 =head1 DESCRIPTION
 
 This program takes a stream of YAML documents (on STDIN or file arguments),
-and prints only the fields specified by the C<pick>.
+and prints only the fields specified by the C<mask>.
 
 =head1 ARGUMENTS
 
-=head2 pick
+=head2 mask
 
 See L<Data::Partial::Google/Rules> for more information
 
@@ -108,7 +108,7 @@ Show this help document.
 
 =head2 --version
 
-Print the current ypick and Perl versions.
+Print the current ymask and Perl versions.
 
 =head1 AUTHOR
 

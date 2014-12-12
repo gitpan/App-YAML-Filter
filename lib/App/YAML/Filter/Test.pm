@@ -1,6 +1,6 @@
 package App::YAML::Filter::Test;
 # ABSTRACT: Base module for App::YAML::Filter tests
-$App::YAML::Filter::Test::VERSION = '0.013';
+$App::YAML::Filter::Test::VERSION = '0.014';
 use strict;
 use warnings;
 use base 'App::YAML::Filter::Base';
@@ -28,7 +28,7 @@ App::YAML::Filter::Test - Base module for App::YAML::Filter tests
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =head1 AUTHOR
 
