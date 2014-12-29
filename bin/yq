@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yq;
 # ABSTRACT: Filter YAML through a command-line program
-$yq::VERSION = '0.014';
+$yq::VERSION = '0.015';
 use App::YAML::Filter::Base;
 use Pod::Usage::Return qw( pod2usage );
 use Getopt::Long qw( GetOptionsFromArray );
@@ -129,7 +129,7 @@ yq - Filter YAML through a command-line program
 
 =head1 VERSION
 
-version 0.014
+version 0.015
 
 =head1 SYNOPSIS
 
@@ -138,6 +138,9 @@ version 0.014
     yq -h|--help|--version
 
 =head1 DESCRIPTION
+
+B<NOTE:> This project is now L<ETL::Yertl - The ETL with a shell|ETL::Yertl>.
+This distribution is deprecated and will not be updated.
 
 This program takes a stream of YAML documents (on STDIN or file arguments),
 applies a filter, then writes the results to STDOUT.

@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yfrom;
 # ABSTRACT: Build YAML from another format (like JSON or CSV)
-$yfrom::VERSION = '0.014';
+$yfrom::VERSION = '0.015';
 use App::YAML::Filter::Base;
 use Pod::Usage::Return qw( pod2usage );
 use Getopt::Long qw( GetOptionsFromArray );
@@ -160,7 +160,7 @@ yfrom - Build YAML from another format (like JSON or CSV)
 
 =head1 VERSION
 
-version 0.014
+version 0.015
 
 =head1 SYNOPSIS
 

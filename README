@@ -2,7 +2,7 @@ NAME
     yq - Filter YAML through a command-line program
 
 VERSION
-    version 0.014
+    version 0.015
 
 SYNOPSIS
         yq [-v] <script> [<file>...]
@@ -10,6 +10,9 @@ SYNOPSIS
         yq -h|--help|--version
 
 DESCRIPTION
+    NOTE: This project is now ETL::Yertl - The ETL with a shell. This
+    distribution is deprecated and will not be updated.
+
     This program takes a stream of YAML documents (on STDIN or file
     arguments), applies a filter, then writes the results to STDOUT.
 

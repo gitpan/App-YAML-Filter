@@ -1,6 +1,6 @@
 package App::YAML::Filter::RecDescentTree;
 # ABSTRACT: A Parse::RecDescent-based parser using a parse tree
-$App::YAML::Filter::RecDescentTree::VERSION = '0.014';
+$App::YAML::Filter::RecDescentTree::VERSION = '0.015';
 use App::YAML::Filter::Base;
 use boolean qw( :all );
 use Parse::RecDescent;
@@ -254,7 +254,7 @@ App::YAML::Filter::RecDescentTree - A Parse::RecDescent-based parser using a par
 
 =head1 VERSION
 
-version 0.014
+version 0.015
 
 =head1 AUTHOR
 

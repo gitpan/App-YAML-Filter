@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 package yto;
 # ABSTRACT: Change YAML to another format (like JSON)
-$yto::VERSION = '0.014';
+$yto::VERSION = '0.015';
 use App::YAML::Filter::Base;
 use Pod::Usage::Return qw( pod2usage );
 use Getopt::Long qw( GetOptionsFromArray );
@@ -128,7 +128,7 @@ yto - Change YAML to another format (like JSON)
 
 =head1 VERSION
 
-version 0.014
+version 0.015
 
 =head1 SYNOPSIS
 

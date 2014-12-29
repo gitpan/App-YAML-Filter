@@ -1,6 +1,6 @@
 package App::YAML::Filter::Regex;
 # ABSTRACT: A regex-based parser for programs
-$App::YAML::Filter::Regex::VERSION = '0.014';
+$App::YAML::Filter::Regex::VERSION = '0.015';
 use App::YAML::Filter::Base;
 use boolean qw( :all );
 use Regexp::Common;
@@ -248,7 +248,7 @@ App::YAML::Filter::Regex - A regex-based parser for programs
 
 =head1 VERSION
 
-version 0.014
+version 0.015
 
 =head1 AUTHOR
 
